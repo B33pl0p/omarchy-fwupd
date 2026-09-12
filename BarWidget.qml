@@ -11,6 +11,7 @@ BarWidget {
   property bool updateAvailable: false
   property bool checking: false
   property int refreshIntervalSec: Math.max(300, Number(setting("refreshIntervalSec", 21600)))
+  readonly property bool opened: panelLoader.item ? panelLoader.item.opened === true : false
 
   function setting(name, fallback) {
     var value = settings ? settings[name] : undefined
@@ -24,8 +25,8 @@ BarWidget {
     }
   }
 
-  function showOverlay() {
-    if (root.bar) root.bar.run("omarchy-shell shell summon io.github.biplop.fwupd")
+  function togglePanel() {
+    if (panelLoader.item && panelLoader.item.toggle) panelLoader.item.toggle()
   }
 
   visible: updateAvailable || checking
@@ -56,6 +57,34 @@ BarWidget {
     onTriggered: root.refresh()
   }
 
+  onBarChanged: injectPanel()
+  onSettingsChanged: injectPanel()
+
+  function injectPanel() {
+    if (!panelLoader.item) return
+    panelLoader.item.bar = root.bar
+    panelLoader.item.settings = root.settings
+  }
+
+  function open() {
+    if (panelLoader.item && panelLoader.item.open) panelLoader.item.open()
+  }
+
+  function close() {
+    if (panelLoader.item && panelLoader.item.close) panelLoader.item.close()
+  }
+
+  Loader {
+    id: panelLoader
+    active: true
+    source: Qt.resolvedUrl("FirmwareUpdates.qml")
+    visible: false
+    onLoaded: {
+      root.injectPanel()
+      Qt.callLater(root.injectPanel)
+    }
+  }
+
   function hasUpdates(output) {
     return String(output || "").indexOf("New version:") >= 0
   }
@@ -68,6 +97,6 @@ BarWidget {
     slotSize: Style.bar.statusSlot
     fontSize: Style.font.caption
     tooltipText: root.checking ? "Checking firmware updates" : "Firmware updates available"
-    onPressed: root.showOverlay()
+    onPressed: root.togglePanel()
   }
 }

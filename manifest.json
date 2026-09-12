@@ -7,13 +7,9 @@
   "license": "MIT",
   "description": "Checks LVFS firmware updates with fwupdmgr and provides an explicit install action.",
   "homepage": "https://github.com/B33pl0p/omarchy-fwupd",
-  "kinds": [
-    "overlay",
-    "bar-widget"
-  ],
+  "kinds": ["bar-widget"],
   "keepLoaded": true,
   "entryPoints": {
-    "overlay": "FirmwareUpdates.qml",
     "barWidget": "BarWidget.qml"
   },
   "barWidget": {
