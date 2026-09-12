@@ -95,7 +95,7 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: "FW"
+    text: "\uf2db"
     slotSize: Style.bar.statusSlot
     fontSize: Style.font.caption
     tooltipText: root.checking ? "Checking firmware updates" :
