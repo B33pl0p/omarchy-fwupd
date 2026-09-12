@@ -10,7 +10,7 @@ BarWidget {
 
   property bool updateAvailable: false
   property bool checking: false
-  property int refreshIntervalSec: Math.max(300, Number(setting("refreshIntervalSec", 21600)))
+  property int refreshIntervalSec: Math.max(300, Number(setting("refreshIntervalSec", 604800)))
   readonly property bool opened: panelLoader.item ? panelLoader.item.opened === true : false
 
   function setting(name, fallback) {

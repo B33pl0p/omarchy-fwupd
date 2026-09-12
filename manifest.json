@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.biplop.fwupd",
   "name": "Firmware Updates",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Biplop",
   "license": "MIT",
   "description": "Checks LVFS firmware updates with fwupdmgr and provides an explicit install action.",
@@ -19,7 +19,7 @@
     "allowMultiple": false,
     "defaultSection": "right",
     "defaults": {
-      "refreshIntervalSec": 21600
+      "refreshIntervalSec": 604800
     },
     "schema": [
       {
@@ -27,9 +27,9 @@
         "type": "integer",
         "label": "Refresh interval (seconds)",
         "min": 300,
-        "max": 86400,
-        "step": 300,
-        "defaultValue": 21600
+        "max": 2592000,
+        "step": 3600,
+        "defaultValue": 604800
       }
     ]
   }

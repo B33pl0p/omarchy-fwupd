@@ -52,6 +52,25 @@ Panel {
     }
   }
 
+  function intervalSeconds() {
+    return Math.max(300, Number(setting("refreshIntervalSec", 604800)))
+  }
+
+  function intervalLabel(seconds) {
+    if (seconds >= 2592000) return "Monthly"
+    if (seconds >= 604800) return "Weekly"
+    if (seconds >= 86400) return "Daily"
+    if (seconds >= 21600) return "Every 6 hours"
+    return "Hourly"
+  }
+
+  function saveInterval(seconds) {
+    var entry = { id: root.moduleName, refreshIntervalSec: seconds }
+    root.settings = entry
+    if (root.bar && root.bar.shell && typeof root.bar.shell.updateEntryInline === "function")
+      root.bar.shell.updateEntryInline(root.moduleName, entry)
+  }
+
   function parseUpdates(output) {
     var lines = String(output || "").split("\n")
     var result = []
@@ -208,6 +227,37 @@ Panel {
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption
+      }
+
+      RowLayout {
+        Layout.fillWidth: true
+
+        Text {
+          text: "Automatic checks"
+          color: root.foreground
+          font.family: root.fontFamily
+          font.pixelSize: Style.font.body
+          Layout.fillWidth: true
+        }
+
+        ComboBox {
+          id: frequencyBox
+          model: [
+            { label: "Hourly", seconds: 3600 },
+            { label: "Every 6 hours", seconds: 21600 },
+            { label: "Daily", seconds: 86400 },
+            { label: "Weekly", seconds: 604800 },
+            { label: "Monthly", seconds: 2592000 }
+          ]
+          currentIndex: {
+            var selected = root.intervalSeconds()
+            for (var i = 0; i < model.length; i++)
+              if (model[i].seconds === selected) return i
+            return 3
+          }
+          textRole: "label"
+          onActivated: root.saveInterval(model[currentIndex].seconds)
+        }
       }
 
       ListView {

@@ -28,15 +28,15 @@ If the first check does not find newly published firmware, run
 
 ## Behavior
 
-- Checks immediately when the bar loads, then every six hours by default.
+- Checks immediately when the bar loads, then weekly by default.
 - Uses `LANG=C` so parsing is stable across desktop locales.
 - Keeps the bar widget visible so the firmware dashboard is always accessible.
 - Never installs firmware automatically.
 - Does not run commands through a shell or pass device data through shell
   arguments.
 
-The refresh interval can be changed in the plugin settings when supported by
-the installed Omarchy shell version.
+The dashboard lets you choose hourly, every six hours, daily, weekly, or
+monthly automatic checks. Manual refresh is always available.
 
 ## Development
 
