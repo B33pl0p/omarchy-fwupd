@@ -13,7 +13,7 @@ the LVFS query manually.
 ## Install
 
 ```bash
-omarchy plugin add /home/biplop/Projects/omarchy-fwupd --enable
+omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd-plugin.git --enable
 omarchy plugin enable io.github.biplop.fwupd right
 ```
 
@@ -30,7 +30,7 @@ If the first check does not find newly published firmware, run
 
 - Checks immediately when the bar loads, then every six hours by default.
 - Uses `LANG=C` so parsing is stable across desktop locales.
-- Shows the bar widget only while checking or when updates are available.
+- Keeps the bar widget visible so the firmware dashboard is always accessible.
 - Never installs firmware automatically.
 - Does not run commands through a shell or pass device data through shell
   arguments.
@@ -43,13 +43,14 @@ the installed Omarchy shell version.
 Validate the manifest locally:
 
 ```bash
-omarchy plugin validate /home/biplop/Projects/omarchy-fwupd
+omarchy plugin validate ./omarchy-fwupd-plugin
 ```
 
-Install from a hosted Git repository after publishing:
+Install or update from the hosted Git repository:
 
 ```bash
-omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd.git --enable
+omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd-plugin.git --enable
+omarchy plugin update io.github.biplop.fwupd --yes
 ```
 
 ## License
