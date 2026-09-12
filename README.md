@@ -6,6 +6,10 @@ Installation is always explicit: clicking **Install updates** opens
 `fwupdmgr update` in Omarchy's floating terminal so authentication, device
 safety checks, and reboot prompts remain visible.
 
+The dashboard identifies the laptop by its DMI vendor and product name, shows
+the current BIOS version, reports the last check time, and lets you refresh
+the LVFS query manually.
+
 ## Install
 
 ```bash

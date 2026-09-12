@@ -11,9 +11,12 @@ Panel {
   moduleName: "io.github.biplop.fwupd"
   ipcTarget: "io.github.biplop.fwupd"
 
-  property bool opened: false
   property bool checking: false
   property string errorText: ""
+  property string productName: "Laptop"
+  property string vendorName: ""
+  property string biosVersion: ""
+  property string lastChecked: "Never"
   property var updates: []
   property string rawOutput: ""
 
@@ -29,13 +32,13 @@ Panel {
   }
 
   function open(payloadJson) {
-    opened = true
+    root.controller.show()
     refresh()
+    loadHardwareInfo()
   }
 
   function close() {
-    opened = false
-    if (root.controller) root.controller.hide()
+    root.controller.hide()
   }
 
   function refresh() {
@@ -67,6 +70,25 @@ Panel {
     close()
   }
 
+  function loadHardwareInfo() {
+    if (!hardwareProcess.running) hardwareProcess.running = true
+  }
+
+  Process {
+    id: hardwareProcess
+    command: ["sh", "-c", "printf '%s\\n' \"$(cat /sys/class/dmi/id/sys_vendor 2>/dev/null)\" \"$(cat /sys/class/dmi/id/product_name 2>/dev/null)\" \"$(cat /sys/class/dmi/id/bios_version 2>/dev/null)\""]
+
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: {
+        var lines = String(text || "").trim().split("\n")
+        if (lines.length > 0 && lines[0] !== "") root.vendorName = lines[0].trim()
+        if (lines.length > 1 && lines[1] !== "") root.productName = lines[1].trim()
+        if (lines.length > 2 && lines[2] !== "") root.biosVersion = lines[2].trim()
+      }
+    }
+  }
+
   Process {
     id: checkProcess
     command: ["env", "LANG=C", "fwupdmgr", "get-updates"]
@@ -76,6 +98,7 @@ Panel {
       onStreamFinished: {
         root.rawOutput = text
         root.updates = root.parseUpdates(text)
+        root.lastChecked = Qt.formatTime(new Date(), "HH:mm")
       }
     }
 
@@ -109,7 +132,7 @@ Panel {
         Layout.fillWidth: true
 
         Text {
-          text: "Firmware updates"
+          text: "Firmware center"
           color: root.foreground
           font.family: root.fontFamily
           font.pixelSize: Style.font.title
@@ -129,6 +152,41 @@ Panel {
         }
       }
 
+      Rectangle {
+        Layout.fillWidth: true
+        implicitHeight: deviceInfo.implicitHeight + Style.spacing.md * 2
+        radius: Style.cornerRadius
+        color: root.alpha(root.foreground, 0.07)
+
+        Column {
+          id: deviceInfo
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
+          anchors.margins: Style.spacing.md
+          spacing: Style.spacing.xs
+
+          Text {
+            text: root.vendorName !== "" ? root.vendorName + " " + root.productName : root.productName
+            color: root.foreground
+            font.family: root.fontFamily
+            font.pixelSize: Style.font.subtitle
+            font.bold: true
+            elide: Text.ElideRight
+            width: parent.width
+          }
+
+          Text {
+            text: "Current BIOS: " + (root.biosVersion !== "" ? root.biosVersion : "Unavailable")
+            color: root.dim
+            font.family: root.fontFamily
+            font.pixelSize: Style.font.caption
+            elide: Text.ElideRight
+            width: parent.width
+          }
+        }
+      }
+
       Text {
         Layout.fillWidth: true
         text: root.checking ? "Checking LVFS metadata and device firmware..." :
@@ -138,6 +196,14 @@ Panel {
         font.family: root.fontFamily
         font.pixelSize: Style.font.body
         wrapMode: Text.WordWrap
+      }
+
+      Text {
+        Layout.fillWidth: true
+        text: "Last checked: " + root.lastChecked
+        color: root.dim
+        font.family: root.fontFamily
+        font.pixelSize: Style.font.caption
       }
 
       ListView {

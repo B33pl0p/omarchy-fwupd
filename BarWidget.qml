@@ -25,7 +25,7 @@ BarWidget {
   }
 
   function showOverlay() {
-    if (root.bar) root.bar.run("omarchy-shell -q shell toggle io.github.biplop.fwupd")
+    if (root.bar) root.bar.run("omarchy-shell shell summon io.github.biplop.fwupd")
   }
 
   visible: updateAvailable || checking

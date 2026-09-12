@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.biplop.fwupd",
   "name": "Firmware Updates",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Biplop",
   "license": "MIT",
   "description": "Checks LVFS firmware updates with fwupdmgr and provides an explicit install action.",
