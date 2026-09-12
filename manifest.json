@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.biplop.fwupd",
+  "name": "Firmware Updates",
+  "version": "0.1.0",
+  "author": "Biplop",
+  "license": "MIT",
+  "description": "Checks LVFS firmware updates with fwupdmgr and provides an explicit install action.",
+  "homepage": "https://github.com/B33pl0p/omarchy-fwupd",
+  "kinds": [
+    "overlay",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "overlay": "FirmwareUpdates.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Firmware Updates",
+    "description": "Shows pending fwupd firmware updates",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "refreshIntervalSec": 21600
+    },
+    "schema": [
+      {
+        "key": "refreshIntervalSec",
+        "type": "integer",
+        "label": "Refresh interval (seconds)",
+        "min": 300,
+        "max": 86400,
+        "step": 300,
+        "defaultValue": 21600
+      }
+    ]
+  }
+}
