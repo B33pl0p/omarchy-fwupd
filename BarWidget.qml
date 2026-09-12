@@ -64,6 +64,8 @@ BarWidget {
     if (!panelLoader.item) return
     panelLoader.item.bar = root.bar
     panelLoader.item.settings = root.settings
+    panelLoader.item.anchorItem = button
+    panelLoader.item.hostWidget = root
   }
 
   function open() {

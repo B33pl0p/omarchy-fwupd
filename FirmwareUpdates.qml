@@ -17,6 +17,8 @@ Panel {
   property string vendorName: ""
   property string biosVersion: ""
   property string lastChecked: "Never"
+  property var anchorItem: null
+  property var hostWidget: null
   property var updates: []
   property string rawOutput: ""
 
@@ -26,6 +28,7 @@ Panel {
   readonly property color border: Color.menu.border
   readonly property color accent: Color.accent
   readonly property string fontFamily: Style.font.menuFamily
+  readonly property var barIdentity: hostWidget || root
 
   function alpha(color, opacity) {
     return Qt.rgba(color.r, color.g, color.b, opacity)
@@ -107,25 +110,26 @@ Panel {
       onStreamFinished: if (text.trim() !== "") root.errorText = text.trim()
     }
 
-    onExited: {
+    onExited: function(exitCode) {
       root.checking = false
       if (exitCode !== 0 && root.errorText === "")
         root.errorText = "fwupdmgr exited with status " + exitCode
     }
   }
 
-  Rectangle {
-    anchors.centerIn: parent
-    width: Math.min(Style.space(620), parent.width - Style.gapsOut * 2)
-    height: Math.min(Style.space(520), parent.height - Style.gapsOut * 2)
-    radius: Style.cornerRadius
-    color: root.surface
-    border.color: root.border
-    border.width: 1
+  KeyboardPanel {
+    id: panel
+    anchorItem: root.anchorItem
+    owner: root.barIdentity
+    bar: root.bar
+    open: root.opened
+    centerOnBar: true
+    contentWidth: panel.fittedContentWidth(Style.space(620))
+    contentHeight: panel.fittedContentHeight(contentColumn.implicitHeight)
 
     ColumnLayout {
-      anchors.fill: parent
-      anchors.margins: Style.spacing.panelPadding
+      id: contentColumn
+      width: panel.contentWidth
       spacing: Style.spacing.md
 
       RowLayout {
@@ -208,7 +212,7 @@ Panel {
 
       ListView {
         Layout.fillWidth: true
-        Layout.fillHeight: true
+        Layout.preferredHeight: Math.min(Style.space(240), contentColumn.height)
         clip: true
         spacing: Style.spacing.sm
         model: root.updates
