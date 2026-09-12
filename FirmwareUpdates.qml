@@ -24,6 +24,10 @@ Panel {
   readonly property color accent: Color.accent
   readonly property string fontFamily: Style.font.menuFamily
 
+  function alpha(color, opacity) {
+    return Qt.rgba(color.r, color.g, color.b, opacity)
+  }
+
   function open(payloadJson) {
     opened = true
     refresh()
@@ -127,7 +131,7 @@ Panel {
 
       Text {
         Layout.fillWidth: true
-        text: root.checking ? "Checking LVFS metadata and device firmware…" :
+        text: root.checking ? "Checking LVFS metadata and device firmware..." :
           root.updates.length > 0 ? root.updates.length + " update(s) available" :
           root.errorText !== "" ? root.errorText : "No firmware updates available"
         color: root.errorText !== "" ? Color.urgent : root.dim
@@ -148,7 +152,7 @@ Panel {
           width: ListView.view.width
           height: titleText.implicitHeight + versionText.implicitHeight + Style.spacing.sm * 2
           radius: Style.cornerRadius
-          color: Qt.alpha(root.foreground, 0.08)
+          color: root.alpha(root.foreground, 0.08)
 
           Column {
             anchors.fill: parent
