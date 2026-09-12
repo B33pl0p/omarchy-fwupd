@@ -29,7 +29,7 @@ BarWidget {
     if (panelLoader.item && panelLoader.item.toggle) panelLoader.item.toggle()
   }
 
-  visible: updateAvailable || checking
+  visible: true
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
 
@@ -96,7 +96,8 @@ BarWidget {
     text: "FW"
     slotSize: Style.bar.statusSlot
     fontSize: Style.font.caption
-    tooltipText: root.checking ? "Checking firmware updates" : "Firmware updates available"
+    tooltipText: root.checking ? "Checking firmware updates" :
+      root.updateAvailable ? "Firmware updates available" : "Firmware status"
     onPressed: root.togglePanel()
   }
 }
