@@ -54,6 +54,8 @@ may require authentication and a reboot.
 - Checks immediately when the bar loads, then weekly by default.
 - Uses `LANG=C` so parsing is stable across desktop locales.
 - Keeps the bar widget visible so the firmware dashboard is always accessible.
+- Sends one desktop notification when a check newly discovers firmware updates;
+  it does not repeat the notification while the same updates remain available.
 - Never installs firmware automatically.
 - Does not run commands through a shell or pass device data through shell
   arguments.

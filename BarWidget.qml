@@ -18,6 +18,22 @@ BarWidget {
     return value === undefined || value === null ? fallback : value
   }
 
+  function applyCheckResult(output) {
+    var nextAvailable = root.hasUpdates(output)
+    var updateCount = root.updateCount(output)
+    if (!root.updateAvailable && nextAvailable) {
+      Quickshell.execDetached([
+        "notify-send",
+        "-a", "Omarchy Firmware Updates",
+        "-i", "software-update-available",
+        "Firmware updates available",
+        updateCount === 1 ? "1 firmware update is ready." :
+          updateCount + " firmware updates are ready."
+      ])
+    }
+    root.updateAvailable = nextAvailable
+  }
+
   function refresh() {
     if (!checkProcess.running) {
       checking = true
@@ -39,7 +55,7 @@ BarWidget {
 
     stdout: StdioCollector {
       waitForEnd: true
-      onStreamFinished: root.updateAvailable = root.hasUpdates(text)
+      onStreamFinished: root.applyCheckResult(text)
     }
 
     stderr: StdioCollector {
@@ -89,6 +105,11 @@ BarWidget {
 
   function hasUpdates(output) {
     return String(output || "").indexOf("New version:") >= 0
+  }
+
+  function updateCount(output) {
+    var matches = String(output || "").match(/New version:/g)
+    return matches ? matches.length : 0
   }
 
   BarIconButton {
