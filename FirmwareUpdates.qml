@@ -240,23 +240,47 @@ Panel {
           Layout.fillWidth: true
         }
 
-        ComboBox {
-          id: frequencyBox
-          model: [
-            { label: "Hourly", seconds: 3600 },
-            { label: "Every 6 hours", seconds: 21600 },
-            { label: "Daily", seconds: 86400 },
-            { label: "Weekly", seconds: 604800 },
-            { label: "Monthly", seconds: 2592000 }
-          ]
-          currentIndex: {
-            var selected = root.intervalSeconds()
-            for (var i = 0; i < model.length; i++)
-              if (model[i].seconds === selected) return i
-            return 3
+        RowLayout {
+          Layout.fillWidth: true
+          spacing: Style.spacing.xs
+
+          Repeater {
+            model: [
+              { label: "Hourly", seconds: 3600 },
+              { label: "Daily", seconds: 86400 },
+              { label: "Weekly", seconds: 604800 },
+              { label: "Monthly", seconds: 2592000 }
+            ]
+
+            delegate: Rectangle {
+              required property var modelData
+              Layout.fillWidth: true
+              implicitHeight: Style.space(32)
+              radius: Style.cornerRadius
+              color: root.intervalSeconds() === modelData.seconds
+                ? root.alpha(root.accent, 0.24)
+                : root.alpha(root.foreground, 0.08)
+              border.width: 1
+              border.color: root.intervalSeconds() === modelData.seconds
+                ? root.alpha(root.accent, 0.8)
+                : root.alpha(root.foreground, 0.14)
+
+              Text {
+                anchors.centerIn: parent
+                text: modelData.label
+                color: root.foreground
+                font.family: root.fontFamily
+                font.pixelSize: Style.font.caption
+              }
+
+              MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.saveInterval(modelData.seconds)
+              }
+            }
           }
-          textRole: "label"
-          onActivated: root.saveInterval(model[currentIndex].seconds)
         }
       }
 

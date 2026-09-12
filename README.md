@@ -60,8 +60,8 @@ may require authentication and a reboot.
 - Does not run commands through a shell or pass device data through shell
   arguments.
 
-The dashboard lets you choose hourly, every six hours, daily, weekly, or
-monthly automatic checks. Manual refresh is always available.
+The dashboard lets you choose hourly, daily, weekly, or monthly automatic
+checks with compact themed buttons. Manual refresh is always available.
 
 The plugin does not overwrite user configuration during installation or
 removal. The frequency selector writes only the selected widget entry after
