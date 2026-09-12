@@ -129,7 +129,7 @@ Panel {
 
     ColumnLayout {
       id: contentColumn
-      width: panel.contentWidth
+      width: panel.contentWidth - panel.padding * 2 - Style.space(4)
       spacing: Style.spacing.md
 
       RowLayout {
@@ -212,7 +212,7 @@ Panel {
 
       ListView {
         Layout.fillWidth: true
-        Layout.preferredHeight: Math.min(Style.space(240), contentColumn.height)
+        Layout.preferredHeight: Style.space(220)
         clip: true
         spacing: Style.spacing.sm
         model: root.updates
