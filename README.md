@@ -13,7 +13,7 @@ the LVFS query manually.
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd-plugin.git --enable
+omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd.git --enable
 omarchy plugin enable io.github.biplop.fwupd right
 ```
 
@@ -70,13 +70,13 @@ the user changes it in the dashboard.
 Validate the manifest locally:
 
 ```bash
-omarchy plugin validate ./omarchy-fwupd-plugin
+omarchy plugin validate ./omarchy-fwupd
 ```
 
 Install or update from the hosted Git repository:
 
 ```bash
-omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd-plugin.git --enable
+omarchy plugin add https://github.com/B33pl0p/omarchy-fwupd.git --enable
 omarchy plugin update io.github.biplop.fwupd --yes
 ```
 
