@@ -26,6 +26,29 @@ omarchy pkg add fwupd
 If the first check does not find newly published firmware, run
 `fwupdmgr refresh` once, then open the plugin and refresh again.
 
+## Remove
+
+```bash
+omarchy plugin remove io.github.biplop.fwupd --yes
+```
+
+Removing the plugin deletes its bar widget from Omarchy's plugin installation.
+If you added a custom `{ "id": "io.github.biplop.fwupd" }` entry to
+`~/.config/omarchy/shell.json`, remove that entry separately.
+
+## Dependencies and permissions
+
+The plugin requires:
+
+- Omarchy shell with third-party bar-widget support
+- `fwupd` / `fwupdmgr`
+- A working Omarchy polkit agent for authenticated firmware installation
+
+The plugin reads DMI metadata from `/sys/class/dmi/id/` and invokes
+`fwupdmgr get-updates` for checks. It never installs firmware automatically.
+The **Install updates** action explicitly launches `fwupdmgr update`, which
+may require authentication and a reboot.
+
 ## Behavior
 
 - Checks immediately when the bar loads, then weekly by default.
@@ -37,6 +60,10 @@ If the first check does not find newly published firmware, run
 
 The dashboard lets you choose hourly, every six hours, daily, weekly, or
 monthly automatic checks. Manual refresh is always available.
+
+The plugin does not overwrite user configuration during installation or
+removal. The frequency selector writes only the selected widget entry after
+the user changes it in the dashboard.
 
 ## Development
 
@@ -56,3 +83,12 @@ omarchy plugin update io.github.biplop.fwupd --yes
 ## License
 
 MIT
+
+## Marketplace notes
+
+This repository is public and includes installation and removal instructions.
+Before submission, confirm that you own or have permission to submit the
+plugin and any associated assets. This plugin currently ships no preview image
+or other third-party asset.
+
+Marketplace approval means listing approval only; it is not a security review.
