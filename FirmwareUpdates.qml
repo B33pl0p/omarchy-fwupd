@@ -229,15 +229,15 @@ Panel {
         font.pixelSize: Style.font.caption
       }
 
-      RowLayout {
+      ColumnLayout {
         Layout.fillWidth: true
+        spacing: Style.spacing.sm
 
         Text {
           text: "Automatic checks"
           color: root.foreground
           font.family: root.fontFamily
           font.pixelSize: Style.font.body
-          Layout.fillWidth: true
         }
 
         RowLayout {
@@ -255,6 +255,7 @@ Panel {
             delegate: Rectangle {
               required property var modelData
               Layout.fillWidth: true
+              Layout.minimumWidth: 0
               implicitHeight: Style.space(32)
               radius: Style.cornerRadius
               color: root.intervalSeconds() === modelData.seconds
